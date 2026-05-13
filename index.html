@@ -408,16 +408,14 @@
     <button class="nav-link">Video AI <span class="nav-badge new">SOON</span></button>
     <button class="nav-link" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">Pricing</button>
   </div>
-  <button class="nav-cta" onclick="document.getElementById('generator').scrollIntoView({behavior:'smooth'})">Start Creating →</button>
-</nav>
-  <div style="display:flex;align-items:center;gap:10px">
-    <div id="userInfo" style="display:none;align-items:center;gap:8px">
-      <img id="userAvatar" style="width:30px;height:30px;border-radius:50%;border:2px solid #1D9E75" src="" alt=""/>
-      <span id="userName" style="font-size:13px;color:#ccc"></span>
-      <span id="userPlan" style="font-size:11px;padding:2px 8px;border-radius:20px;font-weight:600"></span>
-      <button onclick="logout()" style="font-size:12px;padding:5px 12px;border-radius:8px;border:1px solid #333;background:transparent;color:#888;cursor:pointer;font-family:var(--font-sans)">Logout</button>
+  <div style="display:flex;align-items:center;gap:12px">
+    <div id="userInfo" style="display:none;align-items:center;gap:10px;background:rgba(255,255,255,0.05);padding:6px 12px 6px 6px;border-radius:30px;border:1px solid rgba(255,255,255,0.1)">
+      <img id="userAvatar" style="width:30px;height:30px;border-radius:50%;border:2px solid #1D9E75;object-fit:cover" src="" alt=""/>
+      <span id="userName" style="font-size:13px;color:#ccc;font-weight:500"></span>
+      <span id="userPlan" style="font-size:11px;padding:3px 9px;border-radius:20px;font-weight:600"></span>
+      <button onclick="logout()" style="font-size:12px;padding:5px 12px;border-radius:20px;border:1px solid #333;background:transparent;color:#888;cursor:pointer;font-family:var(--font-sans);transition:all 0.15s">Logout</button>
     </div>
-    <button id="loginNavBtn" class="nav-cta" onclick="document.getElementById('loginModal').style.display='flex'">Sign In</button>
+    <button id="loginNavBtn" class="nav-cta" onclick="document.getElementById('loginModal').style.display='flex'">Sign In →</button>
   </div>
 </nav>
 
