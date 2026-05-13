@@ -653,5 +653,107 @@ function download() {
   a.target = '_blank'; a.click();
 }
 </script>
-<div id="payModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:999;align-items:center;justify-content:center"><div style="background:#111;border:1px solid #1D9E75;border-radius:20px;padding:32px;max-width:420px;width:90%;position:relative"><button onclick="document.getElementById('payModal').style.display='none'" style="position:absolute;top:16px;right:16px;background:none;border:none;color:#888;font-size:22px;cursor:pointer">x</button><div style="text-align:center;margin-bottom:24px"><div style="font-size:32px;margin-bottom:8px">💎</div><h3 style="font-family:Syne,sans-serif;font-size:22px;color:white;margin-bottom:4px">Voxly Pro</h3><p style="color:#888;font-size:14px">Unlimited images · 4K quality · Priority generation</p></div><div style="background:#1a1a1a;border-radius:12px;padding:16px;margin-bottom:16px;border:1px solid #333"><div style="font-size:12px;color:#888;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px">JazzCash / EasyPaisa</div><div style="font-size:28px;font-weight:700;color:#1D9E75;margin-bottom:6px">Rs. 500</div><div style="font-size:13px;color:#aaa">Apna number send karein — verification ke baad Pro activate!</div></div><a href="https://wa.me/923001234567?text=Voxly%20Pro%20lena%20hai%20-%20Rs%20500" target="_blank" style="display:block;text-align:center;background:#1D9E75;color:white;padding:14px;border-radius:10px;text-decoration:none;font-weight:600;font-size:15px;margin-top:8px">📱 WhatsApp pe Order karo</a></div></div></body>
+
+<!-- LOGIN MODAL -->
+<div id="loginModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:1000;align-items:center;justify-content:center">
+  <div style="background:#111;border:1px solid #1D9E75;border-radius:24px;padding:36px;max-width:400px;width:90%;position:relative">
+    <button onclick="document.getElementById('loginModal').style.display='none'" style="position:absolute;top:16px;right:16px;background:none;border:none;color:#666;font-size:24px;cursor:pointer">×</button>
+    <div style="text-align:center;margin-bottom:28px">
+      <div style="width:48px;height:48px;background:#1D9E75;border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px">
+        <svg width="28" height="28" viewBox="0 0 22 22" fill="none"><path d="M4 17 C4 10, 9 4, 17 4" stroke="white" stroke-width="2.5" stroke-linecap="round"/><path d="M4 17 C4 11, 10 6, 18 7" stroke="rgba(255,255,255,0.6)" stroke-width="1.8" stroke-linecap="round"/><circle cx="4" cy="17" r="2" fill="white"/></svg>
+      </div>
+      <h2 style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:white;margin-bottom:6px">Welcome to Voxly</h2>
+      <p style="color:#888;font-size:14px">Sign in to save your images and unlock Pro</p>
+    </div>
+    <button onclick="loginWithGoogle()" style="width:100%;padding:13px;background:white;color:#333;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px">
+      <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Continue with Google
+    </button>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+      <div style="flex:1;height:1px;background:#222"></div>
+      <span style="font-size:12px;color:#555">or</span>
+      <div style="flex:1;height:1px;background:#222"></div>
+    </div>
+    <input id="loginEmail" type="email" placeholder="Email address" style="width:100%;padding:12px 14px;background:#1a1a1a;border:1px solid #333;border-radius:10px;color:white;font-size:14px;font-family:'DM Sans',sans-serif;margin-bottom:10px;outline:none;box-sizing:border-box"/>
+    <input id="loginPass" type="password" placeholder="Password" style="width:100%;padding:12px 14px;background:#1a1a1a;border:1px solid #333;border-radius:10px;color:white;font-size:14px;font-family:'DM Sans',sans-serif;margin-bottom:14px;outline:none;box-sizing:border-box"/>
+    <button onclick="loginWithEmail()" style="width:100%;padding:13px;background:#1D9E75;color:white;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">Sign In / Sign Up</button>
+    <p id="loginError" style="color:#ff6b6b;font-size:13px;text-align:center;margin-top:10px;display:none"></p>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
+import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js';
+import { getFirestore, doc, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBdRwKeBRBBT2Coq5-D2GU77_6_fQiKrmU",
+  authDomain: "voxly-app.firebaseapp.com",
+  projectId: "voxly-app",
+  storageBucket: "voxly-app.firebasestorage.app",
+  messagingSenderId: "510896748270",
+  appId: "1:510896748270:web:455a6f4501f2dca11ee5ff"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    document.getElementById('loginModal').style.display = 'none';
+    document.getElementById('loginNavBtn').style.display = 'none';
+    document.getElementById('userInfo').style.display = 'flex';
+    document.getElementById('userAvatar').src = user.photoURL || '';
+    document.getElementById('userName').textContent = user.displayName || user.email.split('@')[0];
+    const userDoc = await getDoc(doc(db, 'users', user.uid));
+    const plan = userDoc.exists() ? userDoc.data().plan : 'free';
+    const badge = document.getElementById('userPlan');
+    badge.textContent = plan === 'pro' ? '💎 PRO' : '🆓 FREE';
+    badge.style.background = plan === 'pro' ? '#1D9E75' : '#333';
+    badge.style.color = 'white';
+    window.userPlan = plan;
+  } else {
+    document.getElementById('loginNavBtn').style.display = 'block';
+    document.getElementById('userInfo').style.display = 'none';
+  }
+});
+
+window.loginWithGoogle = async () => {
+  try {
+    const provider = new GoogleAuthProvider();
+    const result = await signInWithPopup(auth, provider);
+    await setDoc(doc(db, 'users', result.user.uid), {
+      name: result.user.displayName,
+      email: result.user.email,
+      plan: 'free'
+    }, { merge: true });
+  } catch(e) {
+    document.getElementById('loginError').textContent = e.message;
+    document.getElementById('loginError').style.display = 'block';
+  }
+};
+
+window.loginWithEmail = async () => {
+  const email = document.getElementById('loginEmail').value;
+  const pass = document.getElementById('loginPass').value;
+  if(!email || !pass) { alert('Email aur password daalo!'); return; }
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+  } catch(e) {
+    try {
+      const result = await createUserWithEmailAndPassword(auth, email, pass);
+      await setDoc(doc(db, 'users', result.user.uid), { email, plan: 'free' });
+    } catch(e2) {
+      document.getElementById('loginError').textContent = e2.message;
+      document.getElementById('loginError').style.display = 'block';
+    }
+  }
+};
+
+window.logout = async () => {
+  await signOut(auth);
+};
+</script>
+</body>
 </html>
