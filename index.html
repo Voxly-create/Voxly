@@ -409,11 +409,25 @@
     <button class="nav-link" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">Pricing</button>
   </div>
   <div style="display:flex;align-items:center;gap:12px">
-    <div id="userInfo" style="display:none;align-items:center;gap:10px;background:rgba(255,255,255,0.05);padding:6px 12px 6px 6px;border-radius:30px;border:1px solid rgba(255,255,255,0.1)">
-      <img id="userAvatar" style="width:30px;height:30px;border-radius:50%;border:2px solid #1D9E75;object-fit:cover" src="" alt=""/>
-      <span id="userName" style="font-size:13px;color:#ccc;font-weight:500"></span>
-      <span id="userPlan" style="font-size:11px;padding:3px 9px;border-radius:20px;font-weight:600"></span>
-      <button onclick="logout()" style="font-size:12px;padding:5px 12px;border-radius:20px;border:1px solid #333;background:transparent;color:#888;cursor:pointer;font-family:var(--font-sans);transition:all 0.15s">Logout</button>
+    <div id="userInfo" style="display:none;position:relative">
+      <div onclick="toggleDropdown()" style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:4px;border-radius:50px;transition:background 0.15s" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='transparent'">
+        <img id="userAvatar" style="width:36px;height:36px;border-radius:50%;border:2px solid #1D9E75;object-fit:cover" src="" alt=""/>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" id="dropArrow" style="transition:transform 0.2s"><path d="M3 5L7 9L11 5" stroke="#888" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <div id="profileDropdown" style="display:none;position:absolute;top:48px;right:0;background:#111;border:1px solid #222;border-radius:16px;padding:8px;min-width:220px;box-shadow:0 20px 60px rgba(0,0,0,0.5);z-index:999">
+        <div style="padding:12px 14px 10px;border-bottom:1px solid #1a1a1a;margin-bottom:6px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+            <img id="userAvatar2" style="width:38px;height:38px;border-radius:50%;border:2px solid #1D9E75;object-fit:cover" src="" alt=""/>
+            <div>
+              <div id="userName" style="font-size:14px;color:white;font-weight:600"></div>
+              <div id="userEmail" style="font-size:12px;color:#666;margin-top:1px"></div>
+            </div>
+          </div>
+          <span id="userPlan" style="font-size:11px;padding:4px 12px;border-radius:20px;font-weight:600;display:inline-block"></span>
+        </div>
+        <button onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'});toggleDropdown()" style="width:100%;padding:9px 14px;background:rgba(29,158,117,0.1);border:1px solid rgba(29,158,117,0.2);border-radius:10px;color:#1D9E75;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-sans);margin-bottom:6px;text-align:left">💎 Upgrade to Pro</button>
+        <button onclick="logout()" style="width:100%;padding:9px 14px;background:transparent;border:none;border-radius:10px;color:#888;font-size:13px;cursor:pointer;font-family:var(--font-sans);text-align:left;transition:background 0.15s" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">← Logout</button>
+      </div>
     </div>
     <button id="loginNavBtn" class="nav-cta" onclick="document.getElementById('loginModal').style.display='flex'">Sign In →</button>
   </div>
@@ -703,6 +717,8 @@ onAuthStateChanged(auth, async (user) => {
     document.getElementById('loginNavBtn').style.display = 'none';
     document.getElementById('userInfo').style.display = 'flex';
     document.getElementById('userAvatar').src = user.photoURL || '';
+    document.getElementById('userAvatar2').src = user.photoURL || '';
+    document.getElementById('userEmail').textContent = user.email || '';
     document.getElementById('userName').textContent = user.displayName || user.email.split('@')[0];
     const userDoc = await getDoc(doc(db, 'users', user.uid));
     const plan = userDoc.exists() ? userDoc.data().plan : 'free';
@@ -749,6 +765,21 @@ window.loginWithEmail = async () => {
   }
 };
 
+window.toggleDropdown = () => {
+  const d = document.getElementById('profileDropdown');
+  const arrow = document.getElementById('dropArrow');
+  const isOpen = d.style.display === 'block';
+  d.style.display = isOpen ? 'none' : 'block';
+  arrow.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+};
+document.addEventListener('click', (e) => {
+  if (!document.getElementById('userInfo').contains(e.target)) {
+    const d = document.getElementById('profileDropdown');
+    if (d) d.style.display = 'none';
+    const arrow = document.getElementById('dropArrow');
+    if (arrow) arrow.style.transform = 'rotate(0deg)';
+  }
+});
 window.logout = async () => {
   await signOut(auth);
 };
