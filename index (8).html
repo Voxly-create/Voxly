@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="google-site-verification" content="_xByaIN1Ra0nH9-gdiNmrKJT2UlgAj_-gqv7V08DJ7Q"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voxly AI — Free AI Image & Video Generator</title>
+  <meta name="description" content="Voxly is a free AI image generator. Create stunning realistic images from text in seconds.">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --bg2: #111111;
+      --bg3: #1a1a1a;
+      --green: #1D9E75;
+      --green2: #0F6E56;
+      --green-glow: rgba(29,158,117,0.15);
+      --text: #f0f0f0;
+      --text2: #888;
+      --border: rgba(255,255,255,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* TOPBAR */
+    .topbar {
+      background: linear-gradient(90deg, #0F6E56, #1D9E75, #0F6E56);
+      text-align: center;
+      padding: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      position: relative;
+    }
+    .topbar span { color: white; }
+    .topbar a {
+      background: white;
+      color: #085041;
+      padding: 3px 14px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 12px;
+      text-decoration: none;
+      margin-left: 10px;
+    }
+    .topbar .close-top {
+      position: absolute; right: 14px; top: 50%;
+      transform: translateY(-50%);
+      background: none; border: none; color: white;
+      font-size: 18px; cursor: pointer;
+    }
+
+    /* NAV */
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 40px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(10,10,10,0.9);
+      backdrop-filter: blur(20px);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .nav-brand { display: flex; align-items: center; gap: 10px; }
+    .nav-logo {
+      width: 36px; height: 36px;
+      background: var(--green);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .nav-logo svg { width: 22px; height: 22px; }
+    .nav-name { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; color: white; }
+    .nav-links { display: flex; align-items: center; gap: 8px; }
+    .nav-link {
+      padding: 8px 16px; border-radius: 8px;
+      font-size: 13px; color: var(--text2);
+      text-decoration: none; cursor: pointer;
+      background: none; border: none; font-family: 'DM Sans', sans-serif;
+      transition: color 0.15s;
+    }
+    .nav-link:hover { color: var(--text); }
+    .nav-badge {
+      background: var(--green);
+      color: white; font-size: 10px;
+      padding: 2px 7px; border-radius: 20px;
+      font-weight: 600; margin-left: 4px;
+    }
+    .nav-badge.new { background: #7C3AED; }
+    .nav-cta {
+      background: var(--green);
+      color: white; padding: 9px 20px;
+      border-radius: 8px; font-size: 13px;
+      font-weight: 600; border: none; cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: background 0.15s;
+    }
+    .nav-cta:hover { background: var(--green2); }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding: 90px 20px 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 600px; height: 400px;
+      background: radial-gradient(ellipse, rgba(29,158,117,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-announce {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(29,158,117,0.12);
+      border: 1px solid rgba(29,158,117,0.3);
+      border-radius: 30px; padding: 7px 18px;
+      font-size: 13px; color: #5DCAA5;
+      margin-bottom: 32px; cursor: pointer;
+    }
+    .hero-announce span { font-weight: 600; }
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(24px, 3.5vw, 48px);
+      font-weight: 800;
+      line-height: 1.2;
+      color: white;
+      margin-bottom: 20px;
+      letter-spacing: -0.3px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      -webkit-font-smoothing: antialiased;
+    }
+    .hero h1 .accent { color: var(--green); }
+    .hero p {
+      font-size: 18px; color: var(--text2);
+      max-width: 560px; margin: 0 auto 36px;
+      line-height: 1.7;
+    }
+    .hero-btn {
+      background: var(--green);
+      color: white; padding: 16px 40px;
+      border-radius: 50px; font-size: 16px;
+      font-weight: 600; border: none; cursor: pointer;
+      font-family: 'Syne', sans-serif;
+      transition: all 0.2s;
+      display: inline-flex; align-items: center; gap: 10px;
+    }
+    .hero-btn:hover {
+      background: var(--green2);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(29,158,117,0.3);
+    }
+    .hero-pills {
+      display: flex; justify-content: center; gap: 10px;
+      flex-wrap: wrap; margin-top: 32px;
+    }
+    .pill {
+      padding: 7px 18px;
+      border: 1px solid var(--border);
+      border-radius: 30px; font-size: 13px;
+      color: var(--text2); background: var(--bg2);
+    }
+
+    /* GENERATOR SECTION */
+    .gen-section {
+      max-width: 780px; margin: 0 auto;
+      padding: 0 20px 80px;
+    }
+    .gen-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 20px; overflow: hidden;
+    }
+    .gen-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      padding: 0 20px;
+    }
+    .gen-tab {
+      padding: 14px 20px;
+      font-size: 14px; font-weight: 500;
+      color: var(--text2); cursor: pointer;
+      border-bottom: 2px solid transparent;
+      background: none; border-top: none;
+      border-left: none; border-right: none;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text2); transition: color 0.15s;
+    }
+    .gen-tab.active { color: var(--green); border-bottom-color: var(--green); }
+    .gen-body { padding: 24px; }
+    .gen-label { font-size: 12px; color: var(--text2); margin-bottom: 8px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+    .gen-input {
+      width: 100%; background: var(--bg3);
+      border: 1px solid var(--border); border-radius: 12px;
+      padding: 14px 16px; font-size: 15px;
+      color: var(--text); font-family: 'DM Sans', sans-serif;
+      resize: none; min-height: 80px; margin-bottom: 16px;
+      outline: none; transition: border-color 0.15s;
+    }
+    .gen-input:focus { border-color: var(--green); }
+    .gen-input::placeholder { color: #555; }
+    .styles-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .sty {
+      padding: 6px 14px;
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 20px; font-size: 12px; color: var(--text2);
+      cursor: pointer; transition: all 0.15s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .sty:hover { border-color: var(--green); color: var(--text); }
+    .sty.active { background: rgba(29,158,117,0.15); border-color: var(--green); color: #5DCAA5; }
+    .ratio-row { display: flex; gap: 8px; margin-bottom: 20px; }
+    .ratio {
+      padding: 7px 16px;
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 8px; font-size: 12px; color: var(--text2);
+      cursor: pointer; transition: all 0.15s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .ratio.active { border-color: var(--green); color: #5DCAA5; background: rgba(29,158,117,0.1); }
+    .create-btn {
+      width: 100%; padding: 14px;
+      background: var(--green); color: white;
+      border: none; border-radius: 12px;
+      font-size: 15px; font-weight: 600;
+      cursor: pointer; font-family: 'Syne', sans-serif;
+      transition: all 0.2s; display: flex;
+      align-items: center; justify-content: center; gap: 8px;
+    }
+    .create-btn:hover:not(:disabled) { background: var(--green2); transform: translateY(-1px); }
+    .create-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    /* OUTPUT */
+    .out-area {
+      margin-top: 20px; display: none;
+      background: var(--bg3); border-radius: 14px;
+      overflow: hidden; border: 1px solid var(--border);
+    }
+    .out-top {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .out-top span { font-size: 13px; color: var(--text2); }
+    .dl-btn {
+      padding: 6px 14px; background: rgba(29,158,117,0.15);
+      border: 1px solid var(--green); border-radius: 8px;
+      color: var(--green); font-size: 12px; font-weight: 500;
+      cursor: pointer; font-family: 'DM Sans', sans-serif;
+    }
+    .img-box {
+      display: flex;
+      align-items: center; justify-content: center;
+      background: #0d0d0d;
+      padding: 0;
+    }
+    .out-img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      border-radius: 0 0 12px 12px;
+      display: none;
+      aspect-ratio: auto;
+    }
+    .loader { text-align: center; }
+    .loader p { font-size: 13px; color: var(--text2); margin-top: 12px; }
+    .spin {
+      width: 36px; height: 36px; border: 3px solid var(--border);
+      border-top-color: var(--green); border-radius: 50%;
+      animation: spin 0.8s linear infinite; margin: 0 auto;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* VIDEO COMING SOON */
+    .video-cs {
+      text-align: center; padding: 50px 20px;
+    }
+    .video-cs .cs-icon {
+      width: 64px; height: 64px; background: rgba(29,158,117,0.1);
+      border: 1px solid rgba(29,158,117,0.2);
+      border-radius: 20px; display: flex; align-items: center;
+      justify-content: center; margin: 0 auto 16px; font-size: 28px;
+    }
+    .video-cs h3 { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+    .video-cs p { font-size: 14px; color: var(--text2); line-height: 1.6; }
+    .cs-badge {
+      display: inline-block; margin-top: 14px;
+      background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.3);
+      color: #a78bfa; padding: 5px 16px; border-radius: 20px;
+      font-size: 12px; font-weight: 600;
+    }
+
+    /* FEATURES */
+    .features { padding: 80px 20px; max-width: 1100px; margin: 0 auto; }
+    .section-tag {
+      text-align: center; font-size: 12px;
+      color: var(--green); font-weight: 600;
+      text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 800; text-align: center;
+      margin-bottom: 50px; line-height: 1.2;
+    }
+    .feat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+    .feat-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 16px; padding: 24px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .feat-card:hover { border-color: rgba(29,158,117,0.3); transform: translateY(-2px); }
+    .feat-icon {
+      width: 44px; height: 44px;
+      background: rgba(29,158,117,0.1);
+      border: 1px solid rgba(29,158,117,0.2);
+      border-radius: 12px; display: flex;
+      align-items: center; justify-content: center;
+      font-size: 20px; margin-bottom: 14px;
+    }
+    .feat-card h3 { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .feat-card p { font-size: 14px; color: var(--text2); line-height: 1.6; }
+
+    /* PRICING */
+    .pricing { padding: 80px 20px; max-width: 900px; margin: 0 auto; }
+    .price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 50px; }
+    .price-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 20px; padding: 28px;
+      position: relative;
+    }
+    .price-card.popular {
+      border-color: var(--green);
+      background: linear-gradient(135deg, rgba(29,158,117,0.08), var(--bg2));
+    }
+    .popular-badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--green); color: white;
+      padding: 4px 16px; border-radius: 20px;
+      font-size: 11px; font-weight: 700;
+    }
+    .plan-name { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: var(--text2); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .plan-price { font-family: 'Syne', sans-serif; font-size: 36px; font-weight: 800; margin-bottom: 4px; }
+    .plan-price span { font-size: 14px; color: var(--text2); font-weight: 400; }
+    .plan-desc { font-size: 13px; color: var(--text2); margin-bottom: 20px; }
+    .plan-features { list-style: none; margin-bottom: 24px; }
+    .plan-features li { font-size: 13px; color: var(--text2); padding: 6px 0; border-bottom: 1px solid var(--border); display: flex; gap: 8px; }
+    .plan-features li::before { content: '✓'; color: var(--green); font-weight: 700; }
+    .plan-btn {
+      width: 100%; padding: 12px;
+      border-radius: 10px; font-size: 14px;
+      font-weight: 600; cursor: pointer;
+      font-family: 'Syne', sans-serif;
+      border: 1px solid var(--border);
+      background: var(--bg3); color: var(--text);
+      transition: all 0.15s;
+    }
+    .plan-btn.primary { background: var(--green); border-color: var(--green); color: white; }
+    .plan-btn:hover { opacity: 0.85; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px; text-align: center;
+    }
+    .footer-brand { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; }
+    .footer-brand .fn { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; }
+    footer p { font-size: 13px; color: var(--text2); }
+    footer a { color: var(--green); text-decoration: none; }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar" id="topbar">
+  <span>🎉 Voxly is now live! Try AI image generation for FREE</span>
+  <a href="#generator">Try Now →</a>
+  <button class="close-top" onclick="document.getElementById('topbar').style.display='none'">×</button>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <div class="nav-logo">
+      <svg viewBox="0 0 22 22" fill="none">
+        <path d="M4 17 C4 10, 9 4, 17 4" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M4 17 C4 11, 10 6, 18 7" stroke="rgba(255,255,255,0.6)" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M4 17 C7 13, 13 10, 18 11" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/>
+        <circle cx="4" cy="17" r="2" fill="white"/>
+      </svg>
+    </div>
+    <span class="nav-name">Voxly</span>
+  </div>
+  <div class="nav-links">
+    <button class="nav-link" onclick="document.getElementById('generator').scrollIntoView({behavior:'smooth'})">Image AI <span class="nav-badge">FREE</span></button>
+    <button class="nav-link">Video AI <span class="nav-badge new">SOON</span></button>
+    <button class="nav-link" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">Pricing</button>
+  </div>
+  <button class="nav-cta" onclick="document.getElementById('generator').scrollIntoView({behavior:'smooth'})">Start Creating →</button>
+</nav>
+  <div style="display:flex;align-items:center;gap:10px">
+    <div id="userInfo" style="display:none;align-items:center;gap:8px">
+      <img id="userAvatar" style="width:30px;height:30px;border-radius:50%;border:2px solid #1D9E75" src="" alt=""/>
+      <span id="userName" style="font-size:13px;color:#ccc"></span>
+      <span id="userPlan" style="font-size:11px;padding:2px 8px;border-radius:20px;font-weight:600"></span>
+      <button onclick="logout()" style="font-size:12px;padding:5px 12px;border-radius:8px;border:1px solid #333;background:transparent;color:#888;cursor:pointer;font-family:var(--font-sans)">Logout</button>
+    </div>
+    <button id="loginNavBtn" class="nav-cta" onclick="document.getElementById('loginModal').style.display='flex'">Sign In</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-announce">
+    ✨ <span>Voxly 1.0 is live</span> — Free AI Image Generator →
+  </div>
+  <h1>Create <span class="accent">Stunning AI</span><br>Images for Free</h1>
+  <p>Voxly turns your words into breathtaking realistic images in seconds. No signup needed. Completely free.</p>
+  <button class="hero-btn" onclick="document.getElementById('generator').scrollIntoView({behavior:'smooth'})">
+    🎨 Start Creating Now →
+  </button>
+  <div class="hero-pills">
+    <span class="pill">✦ Ultra Realistic</span>
+    <span class="pill">✦ Cinematic Quality</span>
+    <span class="pill">✦ 100% Free</span>
+    <span class="pill">✦ No Login Required</span>
+  </div>
+</section>
+
+<!-- GENERATOR -->
+<section class="gen-section" id="generator">
+  <div class="gen-card">
+    <div class="gen-tabs">
+      <button class="gen-tab active" onclick="switchTab('img',this)">🎨 Image AI</button>
+      <button class="gen-tab" onclick="switchTab('vid',this)">🎬 Video AI</button>
+    </div>
+
+    <!-- IMAGE TAB -->
+    <div class="gen-body" id="imgTab">
+      <div class="gen-label">Describe your image</div>
+      <textarea class="gen-input" id="prompt" placeholder="e.g. A cinematic shot of a futuristic city at night, neon lights reflecting on wet streets, ultra realistic 4k..."></textarea>
+
+      <div class="gen-label">Style</div>
+      <div class="styles-row">
+        <button class="sty active" onclick="setSty(this,'ultra realistic')">🎯 Realistic</button>
+        <button class="sty" onclick="setSty(this,'cinematic film')">🎬 Cinematic</button>
+        <button class="sty" onclick="setSty(this,'anime art style')">✨ Anime</button>
+        <button class="sty" onclick="setSty(this,'oil painting')">🎨 Oil Paint</button>
+        <button class="sty" onclick="setSty(this,'digital art')">💻 Digital Art</button>
+        <button class="sty" onclick="setSty(this,'3d render octane')">📦 3D Render</button>
+        <button class="sty" onclick="setSty(this,'watercolor painting')">💧 Watercolor</button>
+        <button class="sty" onclick="setSty(this,'professional photography')">📷 Photo</button>
+      </div>
+
+      <div class="gen-label">Size</div>
+      <div class="ratio-row">
+        <button class="ratio active" onclick="setRatio(this,1024,1024)">1:1 Square</button>
+        <button class="ratio" onclick="setRatio(this,1280,720)">16:9 Wide</button>
+        <button class="ratio" onclick="setRatio(this,720,1280)">9:16 Portrait</button>
+      </div>
+
+      <button class="create-btn" id="createBtn" onclick="generate()">
+        ✦ Generate with Voxly
+      </button>
+
+      <div class="out-area" id="outArea">
+        <div class="out-top">
+          <span>✨ Voxly Generated</span>
+          <button class="dl-btn" onclick="download()">⬇ Download</button>
+        </div>
+        <div class="img-box" id="imgBox">
+          <div class="loader" id="loader">
+            <div class="spin"></div>
+            <p>Voxly is creating your image...</p>
+          </div>
+          <img id="outImg" class="out-img" alt="Voxly AI Generated Image"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIDEO TAB -->
+    <div class="gen-body" id="vidTab" style="display:none">
+      <div class="video-cs">
+        <div class="cs-icon">🎬</div>
+        <h3>AI Video Generator</h3>
+        <p>Create stunning AI videos from text — just like the images!<br>This feature is launching very soon on Voxly.</p>
+        <span class="cs-badge">🚀 Coming Soon</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="section-tag">Why Voxly?</div>
+  <h2 class="section-title">Everything you need to<br>create with AI</h2>
+  <div class="feat-grid">
+    <div class="feat-card">
+      <div class="feat-icon">⚡</div>
+      <h3>Lightning Fast</h3>
+      <p>Generate stunning images in under 10 seconds. No waiting, no queues, instant results.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🎯</div>
+      <h3>Ultra Realistic</h3>
+      <p>State-of-the-art AI models produce photorealistic images indistinguishable from real photos.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🆓</div>
+      <h3>Always Free</h3>
+      <p>Generate images for free, every day. No credit card, no hidden fees, no limits on free plan.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🌍</div>
+      <h3>Made for Everyone</h3>
+      <p>Simple interface anyone can use. No technical knowledge required — just describe and create.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🎨</div>
+      <h3>8+ Art Styles</h3>
+      <p>Realistic, Cinematic, Anime, Oil Paint, 3D Render and more — one tool, endless creativity.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">📥</div>
+      <h3>Free Download</h3>
+      <p>Download your generated images in high quality. Use them for anything — no watermarks.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="section-tag">Pricing</div>
+  <h2 class="section-title">Simple, honest pricing</h2>
+  <div class="price-grid">
+    <div class="price-card">
+      <div class="plan-name">Free</div>
+      <div class="plan-price">Rs. 0 <span>/ forever</span></div>
+      <div class="plan-desc">Perfect to get started</div>
+      <ul class="plan-features">
+        <li>10 images per day</li>
+        <li>All 8 styles</li>
+        <li>720p quality</li>
+        <li>Free download</li>
+      </ul>
+      <button class="plan-btn" onclick="document.getElementById('generator').scrollIntoView({behavior:'smooth'})">Start Free</button>
+    </div>
+    <div class="price-card popular">
+      <div class="popular-badge">MOST POPULAR</div>
+      <div class="plan-name">Pro</div>
+      <div class="plan-price">Rs. 500 <span>/ week</span></div>
+      <div class="plan-desc">For creators & businesses</div>
+      <ul class="plan-features">
+        <li>Unlimited images</li>
+        <li>4K ultra quality</li>
+        <li>Priority generation</li>
+        <li>Video AI (coming soon)</li>
+        <li>No watermark</li>
+      </ul>
+      <button class="plan-btn primary" onclick="document.getElementById(`payModal`).style.display=`flex`">Get Pro — Rs. 500/week</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <div class="nav-logo" style="width:28px;height:28px">
+      <svg viewBox="0 0 22 22" fill="none" width="16" height="16">
+        <path d="M4 17 C4 10, 9 4, 17 4" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M4 17 C4 11, 10 6, 18 7" stroke="rgba(255,255,255,0.6)" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="4" cy="17" r="2" fill="white"/>
+      </svg>
+    </div>
+    <span class="fn">Voxly</span>
+  </div>
+  <p>© 2025 Voxly AI. Free AI Image Generator. Made with ❤️</p>
+</footer>
+
+<script>
+let selStyle = 'ultra realistic';
+let selW = 1024, selH = 1024;
+let lastUrl = '';
+
+function switchTab(tab, btn) {
+  document.querySelectorAll('.gen-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('imgTab').style.display = tab === 'img' ? 'block' : 'none';
+  document.getElementById('vidTab').style.display = tab === 'vid' ? 'block' : 'none';
+}
+function setSty(btn, style) {
+  document.querySelectorAll('.sty').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active'); selStyle = style;
+}
+function setRatio(btn, w, h) {
+  document.querySelectorAll('.ratio').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active'); selW = w; selH = h;
+}
+
+async function generate() {
+  const prompt = document.getElementById('prompt').value.trim();
+  if (!prompt) { alert('Please describe your image!'); return; }
+
+  const btn = document.getElementById('createBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Generating...';
+
+  const outArea = document.getElementById('outArea');
+  const loader = document.getElementById('loader');
+  const outImg = document.getElementById('outImg');
+
+  outArea.style.display = 'block';
+  loader.style.display = 'block';
+  outImg.style.display = 'none';
+  outArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  const seed = Math.floor(Math.random() * 999999);
+  const qualityBoost = "masterpiece, best quality, ultra detailed, sharp focus, 8k uhd, photorealistic, hyperrealistic, intricate details, perfect lighting, HDR, award winning photo";
+  const fullPrompt = `${prompt}, ${selStyle}, ${qualityBoost}`;
+  const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(fullPrompt)}?width=${selW}&height=${selH}&seed=${seed}&nologo=true&enhance=true&model=flux-realism`;
+  lastUrl = url;
+
+  outImg.onload = () => {
+    loader.style.display = 'none';
+    outImg.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = '✦ Generate with Voxly';
+  };
+  outImg.onerror = () => {
+    loader.innerHTML = '<p style="color:#888">Could not generate. Please try again.</p>';
+    btn.disabled = false;
+    btn.textContent = '✦ Generate with Voxly';
+  };
+  outImg.src = url;
+}
+
+function download() {
+  if (!lastUrl) return;
+  const a = document.createElement('a');
+  a.href = lastUrl; a.download = 'voxly-image.jpg';
+  a.target = '_blank'; a.click();
+}
+</script>
+<div id="payModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:999;align-items:center;justify-content:center"><div style="background:#111;border:1px solid #1D9E75;border-radius:20px;padding:32px;max-width:420px;width:90%;position:relative"><button onclick="document.getElementById('payModal').style.display='none'" style="position:absolute;top:16px;right:16px;background:none;border:none;color:#888;font-size:22px;cursor:pointer">x</button><div style="text-align:center;margin-bottom:24px"><div style="font-size:32px;margin-bottom:8px">💎</div><h3 style="font-family:Syne,sans-serif;font-size:22px;color:white;margin-bottom:4px">Voxly Pro</h3><p style="color:#888;font-size:14px">Unlimited images · 4K quality · Priority generation</p></div><div style="background:#1a1a1a;border-radius:12px;padding:16px;margin-bottom:16px;border:1px solid #333"><div style="font-size:12px;color:#888;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px">JazzCash / EasyPaisa</div><div style="font-size:28px;font-weight:700;color:#1D9E75;margin-bottom:6px">Rs. 500</div><div style="font-size:13px;color:#aaa">Apna number send karein — verification ke baad Pro activate!</div></div><a href="https://wa.me/923001234567?text=Voxly%20Pro%20lena%20hai%20-%20Rs%20500" target="_blank" style="display:block;text-align:center;background:#1D9E75;color:white;padding:14px;border-radius:10px;text-decoration:none;font-weight:600;font-size:15px;margin-top:8px">📱 WhatsApp pe Order karo</a></div></div></body>
+</html>
