@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="google-site-verification" content="_xByaIN1RaOnH9-gdiNmrKJT2UlgAj_-gqv7V08DJ7Q" />
+  <meta name="google-site-verification" content="_xByaIN1Ra0nH9-gdiNmrKJT2UlgAj_-gqv7V08DJ7Q"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Voxly AI — Free AI Image & Video Generator</title>
   <meta name="description" content="Voxly is a free AI image generator. Create stunning realistic images from text in seconds.">
@@ -410,6 +410,16 @@
   </div>
   <button class="nav-cta" onclick="document.getElementById('generator').scrollIntoView({behavior:'smooth'})">Start Creating →</button>
 </nav>
+  <div style="display:flex;align-items:center;gap:10px">
+    <div id="userInfo" style="display:none;align-items:center;gap:8px">
+      <img id="userAvatar" style="width:30px;height:30px;border-radius:50%;border:2px solid #1D9E75" src="" alt=""/>
+      <span id="userName" style="font-size:13px;color:#ccc"></span>
+      <span id="userPlan" style="font-size:11px;padding:2px 8px;border-radius:20px;font-weight:600"></span>
+      <button onclick="logout()" style="font-size:12px;padding:5px 12px;border-radius:8px;border:1px solid #333;background:transparent;color:#888;cursor:pointer;font-family:var(--font-sans)">Logout</button>
+    </div>
+    <button id="loginNavBtn" class="nav-cta" onclick="document.getElementById('loginModal').style.display='flex'">Sign In</button>
+  </div>
+</nav>
 
 <!-- HERO -->
 <section class="hero">
@@ -550,7 +560,7 @@
     <div class="price-card popular">
       <div class="popular-badge">MOST POPULAR</div>
       <div class="plan-name">Pro</div>
-      <div class="plan-price">Rs. 500 <span>/ month</span></div>
+      <div class="plan-price">Rs. 500 <span>/ week</span></div>
       <div class="plan-desc">For creators & businesses</div>
       <ul class="plan-features">
         <li>Unlimited images</li>
@@ -559,7 +569,7 @@
         <li>Video AI (coming soon)</li>
         <li>No watermark</li>
       </ul>
-      <button class="plan-btn primary">Get Pro</button>
+      <button class="plan-btn primary" onclick="document.getElementById(`payModal`).style.display=`flex`">Get Pro — Rs. 500/week</button>
     </div>
   </div>
 </section>
@@ -576,7 +586,7 @@
     </div>
     <span class="fn">Voxly</span>
   </div>
-  <p>© 2025 Voxly AI. Free AI Image Generator. Made with ❤️</p>
+  <p>© 2025 Voxly AI. Free AI Image Generator. Made with ❤️ by Khuzaima Ansari</p>
 </footer>
 
 <script>
@@ -617,8 +627,9 @@ async function generate() {
   outArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
   const seed = Math.floor(Math.random() * 999999);
-  const fullPrompt = `${prompt}, ${selStyle}, highly detailed, high quality, 4k`;
-  const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(fullPrompt)}?width=${selW}&height=${selH}&seed=${seed}&nologo=true&enhance=true`;
+  const qualityBoost = "masterpiece, best quality, ultra detailed, sharp focus, 8k uhd, photorealistic, hyperrealistic, intricate details, perfect lighting, HDR, award winning photo";
+  const fullPrompt = `${prompt}, ${selStyle}, ${qualityBoost}`;
+  const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(fullPrompt)}?width=${selW}&height=${selH}&seed=${seed}&nologo=true&enhance=true&model=flux-realism`;
   lastUrl = url;
 
   outImg.onload = () => {
@@ -642,5 +653,5 @@ function download() {
   a.target = '_blank'; a.click();
 }
 </script>
-</body>
+<div id="payModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:999;align-items:center;justify-content:center"><div style="background:#111;border:1px solid #1D9E75;border-radius:20px;padding:32px;max-width:420px;width:90%;position:relative"><button onclick="document.getElementById('payModal').style.display='none'" style="position:absolute;top:16px;right:16px;background:none;border:none;color:#888;font-size:22px;cursor:pointer">x</button><div style="text-align:center;margin-bottom:24px"><div style="font-size:32px;margin-bottom:8px">💎</div><h3 style="font-family:Syne,sans-serif;font-size:22px;color:white;margin-bottom:4px">Voxly Pro</h3><p style="color:#888;font-size:14px">Unlimited images · 4K quality · Priority generation</p></div><div style="background:#1a1a1a;border-radius:12px;padding:16px;margin-bottom:16px;border:1px solid #333"><div style="font-size:12px;color:#888;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px">JazzCash / EasyPaisa</div><div style="font-size:28px;font-weight:700;color:#1D9E75;margin-bottom:6px">Rs. 500</div><div style="font-size:13px;color:#aaa">Apna number send karein — verification ke baad Pro activate!</div></div><a href="https://wa.me/923001234567?text=Voxly%20Pro%20lena%20hai%20-%20Rs%20500" target="_blank" style="display:block;text-align:center;background:#1D9E75;color:white;padding:14px;border-radius:10px;text-decoration:none;font-weight:600;font-size:15px;margin-top:8px">📱 WhatsApp pe Order karo</a></div></div></body>
 </html>
